@@ -137,32 +137,32 @@ Fixed Fixed::operator/(const Fixed& rhs) const
 
 bool Fixed::operator > (const Fixed& rhs) const
 {
-	return (this->toFloat() > rhs.toFloat());
+	return (this->getRawBits() > rhs.getRawBits());
 }
 
 bool Fixed::operator < (const Fixed& rhs) const
 {
-	return (this->toFloat() < rhs.toFloat());
+	return (this->getRawBits() < rhs.getRawBits());
 }
 
 bool Fixed::operator >= (const Fixed& rhs) const
 {
-	return (this->toFloat() >= rhs.toFloat());
+	return (this->getRawBits() >= rhs.getRawBits());
 }
 
 bool Fixed::operator <= (const Fixed& rhs) const
 {
-	return (this->toFloat() <= rhs.toFloat());
+	return (this->getRawBits() <= rhs.getRawBits());
 }
 
 bool Fixed::operator == (const Fixed& rhs) const
 {
-	return (this->toFloat() == rhs.toFloat());
+	return (this->getRawBits() == rhs.getRawBits());
 }
 
 bool Fixed::operator != (const Fixed& rhs) const
 {
-	return (this->toFloat() != rhs.toFloat());
+	return (this->getRawBits() != rhs.getRawBits());
 }
 
 //--- min,max ---

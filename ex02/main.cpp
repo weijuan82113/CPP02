@@ -8,6 +8,8 @@
 
 #include "Fixed.hpp"
 
+#define debug(a) std::cout << #a << " : " << a << std::endl
+
 int main( void )
 {
 	Fixed a;
@@ -19,5 +21,14 @@ int main( void )
 	std::cout << a << std::endl;
 	std::cout << b << std::endl;
 	std::cout << Fixed::max( a, b ) << std::endl;
+	// Fixed a(100000000);
+	// Fixed b(100000000);
+	// ++a;
+	// debug((a==b));
+	// debug((a>=b));
+	// debug((a<=b));
+	// debug((a>b));
+	// debug((a<b));
+	// debug((a!=b));
 	return 0;
 }
