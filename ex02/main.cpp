@@ -21,8 +21,8 @@ int main( void )
 	std::cout << a << std::endl;
 	std::cout << b << std::endl;
 	std::cout << Fixed::max( a, b ) << std::endl;
-	// Fixed a(100000000);
-	// Fixed b(100000000);
+	// Fixed a(100000);
+	// Fixed b(100001);
 	// ++a;
 	// debug((a==b));
 	// debug((a>=b));
@@ -30,5 +30,7 @@ int main( void )
 	// debug((a>b));
 	// debug((a<b));
 	// debug((a!=b));
+	// debug(Fixed::max(a,b));
+	// debug(Fixed::min(a,b));
 	return 0;
 }
