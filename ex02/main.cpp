@@ -22,7 +22,7 @@ int main( void )
 	std::cout << b << std::endl;
 	std::cout << Fixed::max( a, b ) << std::endl;
 	// Fixed a(100000);
-	// Fixed b(100001);
+	// Fixed b(100000);
 	// ++a;
 	// debug((a==b));
 	// debug((a>=b));
