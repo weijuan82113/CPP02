@@ -54,14 +54,13 @@ Fixed::Fixed(int const i)
 
 Fixed::Fixed(float const f)
 {
-	_value = (int)roundf(f * (1 << this->_fracBit)); //left shift the float by fracBit and roud to integer
+	_value = static_cast<int>(roundf(f * (1 << this->_fracBit))); //left shift the float by fracBit and roud to integer
 }
 
 float Fixed::toFloat( void ) const
 {
 	float f;
-
-	f = (float)getRawBits() / (1 << this->_fracBit); // right shift the fixed pointed value(cast integer to float first) by fracBit
+	f = static_cast<float>(getRawBits()) / (1 << this->_fracBit); // right shift the fixed pointed value(cast integer to float first) by fracBit
 	return (f);
 }
 
@@ -115,22 +114,41 @@ Fixed Fixed::operator--(int)
 
 Fixed Fixed::operator+(const Fixed& rhs) const
 {
-	return (Fixed((this->toFloat()) + (rhs.toFloat())));
+	// have to calculate in int operate because fixed point is used to ultilize the speed of calculation
+	int temp = this->getRawBits() + rhs.getRawBits();
+	Fixed ret;
+	ret.setRawBits(temp);
+	return (ret);
 }
 
 Fixed Fixed::operator-(const Fixed& rhs) const
 {
-	return (Fixed((this->toFloat()) - (rhs.toFloat())));
+	int temp = this->getRawBits() - rhs.getRawBits();
+	Fixed ret;
+	ret.setRawBits(temp);
+	return (ret);
 }
 
 Fixed Fixed::operator*(const Fixed& rhs) const
 {
-	return (Fixed((this->toFloat()) * (rhs.toFloat())));
+	//to transfer multipled raw_value to the nomral one
+	//ex: frac bit is 1
+	//1.1(raw_value: 11) * 1.1(raw_value: 11)
+	//= 1.21(raw_value * raw_value is 121 but the normal one is 12.1 so have to transfer to 12.1 (121/10))
+	int temp = this->getRawBits() * rhs.getRawBits();
+	temp /= (1 << this->_fracBit);
+	Fixed ret;
+	ret.setRawBits(temp);
+	return (ret);
 }
 
 Fixed Fixed::operator/(const Fixed& rhs) const
 {
-	return (Fixed((this->toFloat()) / (rhs.toFloat())));
+	int temp = this->getRawBits() / rhs.getRawBits();
+	temp *= (1 << this->_fracBit);
+	Fixed ret;
+	ret.setRawBits(temp);
+	return (ret);
 }
 
 //--- >,<,>=,<=,==,!= ---
@@ -163,23 +181,6 @@ bool Fixed::operator == (const Fixed& rhs) const
 bool Fixed::operator != (const Fixed& rhs) const
 {
 	return (this->getRawBits() != rhs.getRawBits());
-}
-
-//--- min,max ---
-Fixed& Fixed::min(Fixed& lhs, Fixed& rhs)
-{
-	if (lhs >= rhs)
-		return (rhs);
-	else
-		return (lhs);
-}
-
-Fixed& Fixed::max(Fixed& lhs, Fixed& rhs)
-{
-	if (lhs >= rhs)
-		return (lhs);
-	else
-		return (rhs);
 }
 
 //--- const min, const max
