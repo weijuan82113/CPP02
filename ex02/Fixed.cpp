@@ -5,11 +5,11 @@
 Fixed::Fixed()
 {
 	_value = 0;
-};
+}
 
 Fixed::~Fixed()
 {
-};
+}
 
 Fixed::Fixed(const Fixed& copyClass)
 {
@@ -23,17 +23,17 @@ Fixed& Fixed::operator=(const Fixed& rhs)
 		_value = rhs.getRawBits();
 	}
 	return *this;
-};
+}
 
 int Fixed::getRawBits(void) const
 {
 	return (_value);
-};
+}
 
 void Fixed::setRawBits(int const raw)
 {
 	_value = raw;
-};
+}
 
 //---------ex00--------
 
@@ -41,14 +41,7 @@ void Fixed::setRawBits(int const raw)
 
 Fixed::Fixed(int const i)
 {
-	int positive_flag = true;
-	if (i < 0)
-		positive_flag = false;
 	int temp = i * (1 << this->_fracBit);
-	if (positive_flag && temp < 0) //the 31bit of positive num is 0; the the 31bit of negtive num is 1
-		temp -= (1 << this->_fracBit);
-	else if (!positive_flag && temp > 0)
-		temp += (1 << this->_fracBit);
 	_value = temp;
 }
 
@@ -71,8 +64,7 @@ int Fixed::toInt( void ) const
 
 std::ostream& operator<<(std::ostream &o, const Fixed& fix)
 {
-	o << fix.toFloat();
-	return (o);
+	return (o << fix.toFloat());
 }
 
 //---------ex01--------
@@ -82,16 +74,14 @@ std::ostream& operator<<(std::ostream &o, const Fixed& fix)
 //---  prefix ++f,--f  ---
 Fixed& Fixed::operator++()
 {
-	Fixed& temp = *this;
-	temp._value = ++_value;
-	return temp;
+	++_value;
+	return *this;
 }
 
 Fixed& Fixed::operator--()
 {
-	Fixed& temp = *this;
-	temp._value = --_value;
-	return temp;
+	--_value;
+	return *this;
 }
 
 //---  postfix f++,f--  ---
@@ -99,14 +89,14 @@ Fixed& Fixed::operator--()
 Fixed Fixed::operator++(int)
 {
 	Fixed temp = *this;
-	temp._value = _value++;
+	_value++;
 	return temp;
 }
 
 Fixed Fixed::operator--(int)
 {
 	Fixed temp = *this;
-	temp._value = _value--;
+	_value--;
 	return temp;
 }
 
@@ -133,10 +123,10 @@ Fixed Fixed::operator*(const Fixed& rhs) const
 {
 	//to transfer multipled raw_value to the nomral one
 	//ex: frac bit is 1
-	//1.1(raw_value: 11) * 1.1(raw_value: 11)
-	//= 1.21(raw_value * raw_value is 121 but the normal one is 12.1 so have to transfer to 12.1 (121/10))
-	int temp = this->getRawBits() * rhs.getRawBits();
-	temp /= (1 << this->_fracBit);
+	//raw_value: 11 (int 1.1) * 11 (int 1.1)
+	//= raw_value : 121 (int:1.21)(normal one is 12.1) so have to transfer to 12.1 (1.21*10))
+	int temp = this->toInt() * rhs.toInt();
+	temp *= (1 << this->_fracBit);
 	Fixed ret;
 	ret.setRawBits(temp);
 	return (ret);
@@ -186,7 +176,7 @@ bool Fixed::operator != (const Fixed& rhs) const
 //--- const min, const max
 const Fixed& Fixed::min(const Fixed& lhs, const Fixed& rhs)
 {
-	if (lhs >= rhs)
+	if (lhs > rhs) // if lhs = rhs return lhs, because lhs do not influence the sort
 		return (rhs);
 	else
 		return (lhs);

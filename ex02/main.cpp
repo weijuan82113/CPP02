@@ -22,9 +22,9 @@ int main( void )
 	// std::cout << b << std::endl;
 	// std::cout << Fixed::max( a, b ) << std::endl;
 
-	Fixed a(0.1f);
+	Fixed a(1.2f);
 	Fixed b(1.6f);
-	debug((b/a));
+	debug((b*a));
 
 	// ++a;
 	// debug((a==b));
